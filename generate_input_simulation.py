@@ -819,8 +819,8 @@ def main():
     pair_in_each_net = 2 #2, None for all pos + equal number neg
 
 
-    output_dir="simulation_data/"
-    input_dir="simulation_node4_indirect_reshow/"
+    output_dir="simulation_data_for_CNNC/"
+    input_dir="simulation_data/simulation_node4_indirect_reshow/"
 
     if not os.path.isdir(output_dir):
         os.mkdir(output_dir)

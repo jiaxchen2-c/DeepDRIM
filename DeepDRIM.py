@@ -47,8 +47,24 @@ from sklearn import metrics
 from scipy import interp
 import pandas as pd
 
+
+
+
+parser = argparse.ArgumentParser(description="")
+
+parser.add_argument('-num_batches', type=int, required=True, default=None, help="Number of TF or the number of x file.")
+parser.add_argument('-data_path', required=True, default=None, help="The path that includes x file, y file and z file.")
+parser.add_argument('-output_dir', required=True, default="./output/", help="Indicate the path for output.")
+parser.add_argument('-cross_validation_fold_divide_file', default=None, help="A file that indicate how to divide the x file into three-fold. The file include three line, each line list the ID of the x files for the folder (split by ',')")
+
+parser.add_argument('-to_predict', default=False, help="True or False. Default is False, then the code will do cross-validation evaluation. If set to True, we need to indicate weight_path for a trained model and the code will do prediction based on the trained model.")
+parser.add_argument('-weight_path', default=None, help="The path for a trained model.")
+
+args = parser.parse_args()
+
+
 class direct_model1_squarematrix:
-    def __init__(self, num_batches=5, output_dir=None, data_path="/home/comp/jxchen/direct_model1/simulation_indirect17_batches_version1/", predict_output_dir=None):
+    def __init__(self, num_batches=5, output_dir=None, data_path=None, predict_output_dir=None):
         # ###################################### parameter settings
         self.data_augmentation = False
         # num_predictions = 20
@@ -58,7 +74,7 @@ class direct_model1_squarematrix:
         # the best epochs and learning rate by a test on the first three TF in list
         # length_TF =3057  # number of divide data parts
         # num_predictions = 20
-        self.model_name = 'keras_cnn_trained_model_shallow.h5'
+        self.model_name = 'keras_cnn_trained_model_DeepDRIM.h5'
         self.output_dir = output_dir
         if output_dir is not None:
             if not os.path.isdir(self.output_dir):
@@ -124,7 +140,7 @@ class direct_model1_squarematrix:
         print(self.x_train.shape, 'x_train samples')
         print(self.x_test.shape, 'x_test samples')
         if self.output_dir is not None:
-            self.save_dir = os.path.join(self.output_dir, str(test_indel) + 'YYYY_saved_models_T_32-32-64-64-128-128-512_e' + str(epochs))  ## the result folder
+            self.save_dir = os.path.join(self.output_dir, str(test_indel) + '_saved_models' + str(epochs))  ## the result folder
         else:
             self.save_dir="."
         if self.num_classes > 2:
@@ -591,34 +607,58 @@ class direct_model1_squarematrix:
             df.to_csv(self.predict_output_dir +str(test_indel)+ 'end_z_test.csv')
 
 
+def load_indel_lists_from_file(cross_validation_fold_divide_file):
+    s = open(cross_validation_fold_divide_file)
+    for line in s:
+        separation = line.split(',')
+        indel_list = []
+        for i in range(0, len(separation)):
+            indel_list.append(separation[i])
+    indel_list0=indel_list[0]
+    indel_list1=indel_list[1]
+    indel_list2=indel_list[2]
+
+    return indel_list0,indel_list1,indel_list2
+
+
 def main():
-    #node_num=args.node_num
-    
 
-    tcs = direct_model1_squarematrix(num_batches=13,
-        data_path="boneMarrow_TFdivideNew_topcov10/version11/",
-        output_dir="out_DeepDRIM_topcov10/")
+    #data_path="boneMarrow_TFdivideNew_topcov10/version11/"
+    #output_dir="out_DeepDRIM_topcov10/"
+    #cross_validation_fold_divide_file="cross_validation_fold_divide.txt"
 
-    indel_list0 = [4, 6, 9, 3, 1] #for bone marrow
-    indel_list1 = [0, 2, 7, 12] #for bone marrow
-    indel_list2 = [10, 5, 8, 11] #for bone marrow
+    tcs = direct_model1_squarematrix(num_batches=args.num_batches,
+        data_path=args.data_path,
+        output_dir=args.output_dir)
+    indel_list0,indel_list1,indel_list2=load_indel_lists_from_file(args.cross_validation_fold_divide_file)
 
-    tcs.train_and_test_model_dividePart_assignTForder(indel_list0,indel_list1,indel_list2,num_of_pair_ratio=1)
+    tcs.train_and_test_model_dividePart_assignTForder(indel_list0,indel_list1,indel_list2)
 
 
 def main_predict():
-    weight_path = "to_predict/mesc_training_weights.hdf5"
-    data_path = "to_predict/boneMarrow_TFdivideNew_topcov10/version11/"
+    #weight_path = "to_predict/mesc_training_weights.hdf5"
+    #data_path = "to_predict/boneMarrow_TFdivideNew_topcov10/version11/"
 
-    predict_output_dir = "to_predict/predict_boneMarrow_withmescWeight/"
-    num_batches = 13
-    tcs = direct_model1_squarematrix(num_batches=num_batches,
-                                     data_path=data_path,
-                                     predict_output_dir=predict_output_dir)
-    tcs.predict_use_model(weight_path)
+    #predict_output_dir = "to_predict/predict_boneMarrow_withmescWeight/"
+    #num_batches = 13
+    tcs = direct_model1_squarematrix(num_batches=args.num_batches,
+                                     data_path=args.data_path,
+                                     predict_output_dir=args.output_dir)
+    tcs.predict_use_model(args.weight_path)
 
 
 if __name__ == '__main__':
-    main()
-    #main_predict()
+    if args.to_predict:
+        if args.weight_path is not None:
+            
+            main_predict()
+        else:
+            print("Require input trained model weight_path.")
+
+    else:
+        if args.cross_validation_fold_divide_file is not None:
+            main()
+        else:
+            print("Require input cross_validation_fold_divide_file")
+
 

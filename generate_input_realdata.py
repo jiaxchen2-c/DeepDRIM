@@ -7,7 +7,26 @@ from numpy import *
 import numpy as np
 import json, re,os, sys
 #from GENIE3 import *
+import argparse
 
+
+
+
+parser = argparse.ArgumentParser(description="")
+
+parser.add_argument('-out_dir', required=True, help='Indicate the path for output.')
+parser.add_argument('-expr_file', required=True, help='The file of the gene expression profile. Can be h5 or csv file, the format please refer the example data.')
+parser.add_argument('-pairs_for_predict_file', required=True, help='The file of the training gene pairs and their labels.')
+parser.add_argument('-geneName_map_file', required=True, default=None, help='The file to map the name of gene in expr_file to the pairs_for_predict_file')
+
+parser.add_argument('-flag_load_from_h5', default=False, help='Is the expr_file is a h5 file. True or False.')
+parser.add_argument('-flag_load_split_batch_pos', default=True, help='Is there a file that indicate the position in pairs_for_predict_file to divide pairs into different TFs.')
+parser.add_argument('-TF_divide_pos_file', default=None, help='File that indicate the position in pairs_for_predict_file to divide pairs into different TFs.')
+
+parser.add_argument('-TF_num', type=int, default=None, help='To generate representation for this number of TFs. Should be a integer that equal or samller than the number of TFs in the pairs_for_predict_file.')
+parser.add_argument('-TF_order_random', default=False, help='If the TF_num samller than the number of TFs in the pairs_for_predict_file, we need to indicate TF_order_random, if TF_order_random=True, then the code will generate representation for randomly selected TF_num TFs.')
+
+args = parser.parse_args()
 
 class RepresentationTest2:
     def __init__(self,output_dir,x_method_version=1, max_col=None, pair_in_batch_num=250, start_batch_num=0,
@@ -1240,8 +1259,16 @@ def generate_train_pairs_by_TF_genes(gene_names, TF,out_file):
 
 
 
-
 if __name__ == '__main__':
+
+
+    flag_load_split_batch_pos = (args.flag_load_split_batch_pos=='True')
+    flag_load_from_h5 = (args.flag_load_from_h5=='True')
+    TF_order_random = (args.TF_order_random=='True')
+
+
+    main_for_representation_single_cell_type(out_dir=args.out_dir, expr_file=args.expr_file, pairs_for_predict_file=args.pairs_for_predict_file, TF_divide_pos_file=args.TF_divide_pos_file, geneName_map_file=args.geneName_map_file, TF_num=args.TF_num,
+                                             TF_order_random=TF_order_random,flag_load_split_batch_pos=flag_load_split_batch_pos,flag_load_from_h5=flag_load_from_h5)
 
     if False:
         main_for_representation_single_cell_type("bonemarrow_representation", 'bone_marrow_cell.h5', 'gold_standard_for_TFdivide',
@@ -1251,7 +1278,7 @@ if __name__ == '__main__':
                                                  add_self_image=True,cat_option="multi_channel_zhang",top_or_random_or_all="top_cov",get_abs=False)
     
 
-    if True:
+    if False:
         main_for_representation_single_cell_type('hESC_representation_nobound_top_cov_noabs', 'hESC/ExpressionData.csv', "training_pairshESC.txt",
                                                  "training_pairshESC.txtTF_divide_pos.txt", "hESC_geneName_map.txt",TF_num=18,
                                                  TF_order_random=True, flag_load_split_batch_pos=True,add_self_image=True,
