@@ -128,7 +128,7 @@ more_genes_theta_cov=function(fileHeader,p=10, sparsity=0.7,mu_zero=F,sample_n=1
 
 
 #####generate 4 node indirect...
-output_dir=paste("simulation_node4_indirect_reshow/",sep="")
+output_dir=paste("simulation_data/simulation_node4_indirect_reshow/",sep="")
 dir.create(output_dir)
 
 for(i in c(1:2500))

@@ -110,55 +110,6 @@ class ChipSeq_data_convert:
                                 pass
 
 
-
-    def initialize_exp_to_TF_set(self, tissue='liver'):#for primary  CD4+ T-cells
-        if tissue=='liver':
-            self.single_cell_exp_set = ['EXP047717', 'EXP057994', 'EXP031438', 'EXP031441', 'EXP031443', 'EXP031445',
-                                        'EXP031447',
-                                        'EXP047494', 'EXP047495', 'EXP047496', 'EXP047716', 'EXP047717', 'EXP057994',
-                                        'EXP057995',
-                                        'EXP057996', 'EXP057997']
-        elif tissue=='CD4':#human primary CD4+ T-cell
-            self.single_cell_exp_set=['EXP054902','EXP054903','EXP054904','EXP054905','EXP054897','EXP054898','EXP054899','EXP054900','EXP049025']
-
-        elif tissue=='lung':
-            self.single_cell_exp_set = ['EXP048466','EXP048467','EXP048592','EXP048593','EXP049230','EXP049231',
-                                        'EXP049232','EXP049233','EXP049234','EXP049235','EXP049236','EXP049237',
-                                        'EXP049242','EXP049243','EXP049244','EXP049245','EXP049246','EXP049247','EXP054265']
-        ###for Mus musculus
-        elif tissue=='oligodendrocyte':
-            self.single_cell_exp_set = ['EXP055948', 'EXP050010','EXP050011', 'EXP050012']
-
-        elif tissue=='neural_stem_cells':
-            self.single_cell_exp_set = ['EXP055947', 'EXP056081', 'EXP056080', 'EXP056080']
-
-        elif tissue=='embryonic_cortex':
-            self.single_cell_exp_set = ['EXP051224','EXP051220', 'EXP051225', 'EXP051221', 'EXP051226',
-                                        'EXP051222', 'EXP051227', 'EXP051223', 'EXP054745', 'EXP054746']
-
-        elif tissue=='CamkIIa-positive nuclei':
-            self.single_cell_exp_set = ['EXP053537', 'EXP053535', 'EXP053538', 'EXP053536']
-
-        elif tissue=='brain':
-            self.single_cell_exp_set = ['EXP050013', 'EXP055948', 'EXP050010', 'EXP050011', 'EXP050012',
-                                        'EXP059274', 'EXP059275', 'EXP055947']
-
-        elif tissue=='Drosophila_eye_disks':
-            self.single_cell_exp_set = ['EXP045482', 'EXP045785','EXP045786', 'EXP045811', 'EXP045812',
-                                        'EXP045813', 'EXP045882', 'EXP045475',  'EXP045881']
-
-        elif tissue=='Drosophila_ovary':
-            self.single_cell_exp_set = ['EXP045465', 'EXP045466', 'EXP045463', 'EXP045464']
-
-        elif tissue=='B_cell':
-            self.single_cell_exp_set = ['EXP058120', 'EXP058121', 'EXP058126', 'EXP058127',
-                                        'EXP000756', 'EXP000757', 'EXP000758', 'EXP000759',
-                                        'EXP000760', 'EXP000761', 'EXP000762', 'EXP000763',
-                                        'EXP000764', 'EXP000765', 'EXP000766', 'EXP000767',
-                                        'EXP000768', 'EXP000769', 'EXP000770', 'EXP000771',
-                                        'EXP000772', 'EXP000773', 'EXP000774', 'EXP000775']
-
-
     def intersection(self,lst1, lst2):
         # Use of hybrid method
         temp = set(lst2)
@@ -735,21 +686,6 @@ class ChipSeq_data_convert:
 
     #####################################################################
 
-    def work_chipSeq_to_positive_pair(self,tissue='liver',species="Homo_sapiens"):
-        self.initialize_exp_to_TF_set(tissue=tissue)
-        if species=='Homo_sapiens':
-            self.function_read_gtf("Homo_sapiens.GRCh38.99.gtf.gz")
-            #self.read_meta_cluster("Homo_sapiens_meta_clusters.interval.gz")
-            self.read_macs_peak("Homo_sapiens_macs2_peaks.interval.gz", 8)
-        elif species=="Mus_musculus":
-            self.function_read_gtf("Mus_musculus.GRCm38.100.gtf.gz")
-            # self.read_meta_cluster("Homo_sapiens_meta_clusters.interval.gz")
-            self.read_macs_peak("Mus_musculus_macs2_peaks.interval.gz", 8)
-        elif species=="Drosophila_melanogaster":
-            self.function_read_gtf("Drosophila_melanogaster.BDGP6.28.100.gtf.gz")
-            # self.read_meta_cluster("Homo_sapiens_meta_clusters.interval.gz")
-            self.read_macs_peak("Drosophila_melanogaster_macs2_peaks.interval.gz", 8,TF_title_col=11,line_length=14)
-        self.output_positive_pair_set(tissue+"_macs_peak_set_pvalue_e10_8.csv", tissue+"_macs_positive_pairs__pvalue_e10_8.csv")
 
     def get_geneIDs_from_geneName_for_GTEx_positive(self, geneNames, ID_to_name_mapfile,id_col,name_col, lower_flag=False):
         geneIDs = []
@@ -872,13 +808,76 @@ class ChipSeq_data_convert:
         train_pairs.to_csv(out_file,sep="\t",header=False,index=False)
 
 
+    def work_chipSeq_to_positive_pair(self,tissue='liver',species="Homo_sapiens"):
+        self.initialize_exp_to_TF_set(tissue=tissue)
+        if species=='Homo_sapiens':
+            self.function_read_gtf("Homo_sapiens.GRCh38.99.gtf.gz")
+            #self.read_meta_cluster("Homo_sapiens_meta_clusters.interval.gz")
+            self.read_macs_peak("Homo_sapiens_macs2_peaks.interval.gz", 8)
+        elif species=="Mus_musculus":
+            self.function_read_gtf("Mus_musculus.GRCm38.100.gtf.gz")
+            # self.read_meta_cluster("Homo_sapiens_meta_clusters.interval.gz")
+            self.read_macs_peak("Mus_musculus_macs2_peaks.interval.gz", 8)
+        elif species=="Drosophila_melanogaster":
+            self.function_read_gtf("Drosophila_melanogaster.BDGP6.28.100.gtf.gz")
+            # self.read_meta_cluster("Homo_sapiens_meta_clusters.interval.gz")
+            self.read_macs_peak("Drosophila_melanogaster_macs2_peaks.interval.gz", 8,TF_title_col=11,line_length=14)
+        self.output_positive_pair_set(tissue+"_macs_peak_set_pvalue_e10_8.csv", tissue+"_macs_positive_pairs__pvalue_e10_8.csv")
 
+
+
+
+    def initialize_exp_to_TF_set(self, tissue='B_cell'):#for primary  CD4+ T-cells
+        if tissue=='liver':
+            self.single_cell_exp_set = ['EXP047717', 'EXP057994', 'EXP031438', 'EXP031441', 'EXP031443', 'EXP031445',
+                                        'EXP031447',
+                                        'EXP047494', 'EXP047495', 'EXP047496', 'EXP047716', 'EXP047717', 'EXP057994',
+                                        'EXP057995',
+                                        'EXP057996', 'EXP057997']
+        elif tissue=='CD4':#human primary CD4+ T-cell
+            self.single_cell_exp_set=['EXP054902','EXP054903','EXP054904','EXP054905','EXP054897','EXP054898','EXP054899','EXP054900','EXP049025']
+
+        elif tissue=='lung':
+            self.single_cell_exp_set = ['EXP048466','EXP048467','EXP048592','EXP048593','EXP049230','EXP049231',
+                                        'EXP049232','EXP049233','EXP049234','EXP049235','EXP049236','EXP049237',
+                                        'EXP049242','EXP049243','EXP049244','EXP049245','EXP049246','EXP049247','EXP054265']
+        ###for Mus musculus
+        elif tissue=='oligodendrocyte':
+            self.single_cell_exp_set = ['EXP055948', 'EXP050010','EXP050011', 'EXP050012']
+
+        elif tissue=='neural_stem_cells':
+            self.single_cell_exp_set = ['EXP055947', 'EXP056081', 'EXP056080', 'EXP056080']
+
+        elif tissue=='embryonic_cortex':
+            self.single_cell_exp_set = ['EXP051224','EXP051220', 'EXP051225', 'EXP051221', 'EXP051226',
+                                        'EXP051222', 'EXP051227', 'EXP051223', 'EXP054745', 'EXP054746']
+
+        elif tissue=='CamkIIa-positive nuclei':
+            self.single_cell_exp_set = ['EXP053537', 'EXP053535', 'EXP053538', 'EXP053536']
+
+        elif tissue=='brain':
+            self.single_cell_exp_set = ['EXP050013', 'EXP055948', 'EXP050010', 'EXP050011', 'EXP050012',
+                                        'EXP059274', 'EXP059275', 'EXP055947']
+
+        elif tissue=='Drosophila_eye_disks':
+            self.single_cell_exp_set = ['EXP045482', 'EXP045785','EXP045786', 'EXP045811', 'EXP045812',
+                                        'EXP045813', 'EXP045882', 'EXP045475',  'EXP045881']
+
+        elif tissue=='Drosophila_ovary':
+            self.single_cell_exp_set = ['EXP045465', 'EXP045466', 'EXP045463', 'EXP045464']
+
+        elif tissue=='B_cell':
+            self.single_cell_exp_set = ['EXP058120', 'EXP058121', 'EXP058126', 'EXP058127',
+                                        'EXP000756', 'EXP000757', 'EXP000758', 'EXP000759',
+                                        'EXP000760', 'EXP000761', 'EXP000762', 'EXP000763',
+                                        'EXP000764', 'EXP000765', 'EXP000766', 'EXP000767',
+                                        'EXP000768', 'EXP000769', 'EXP000770', 'EXP000771',
+                                        'EXP000772', 'EXP000773', 'EXP000774', 'EXP000775']
 
 
 
 def main_single_cell_type_chipseq_to_positive_pair():
     tcs = ChipSeq_data_convert()
-
     tcs.work_chipSeq_to_positive_pair(tissue='B_cell')
     
 
