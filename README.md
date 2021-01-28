@@ -47,15 +47,15 @@ Readme for data folder....!!!!!!!!!!!!!!!
 
 **Parameters**:
 
-> out_dir: Indicate the path for output.
-> expr_file: The file of the gene expression profile. Can be h5 or csv file, the format please refer the example data.
-> pairs_for_predict_file: The file of the training gene pairs and their labels.
-> geneName_map_file: The file to map the name of gene in expr_file to the pairs_for_predict_file
-> flag_load_from_h5: Is the expr_file is a h5 file. True or False.
-> flag_load_split_batch_pos: Is there a file that indicate the position in pairs_for_predict_file to divide pairs into different TFs.
-> TF_divide_pos_file: File that indicate the position in pairs_for_predict_file to divide pairs into different TFs.
-> TF_num: To generate representation for this number of TFs. Should be a integer that equal or samller than the number of TFs in the pairs_for_predict_file.
-> TF_order_random: If the TF_num samller than the number of TFs in the pairs_for_predict_file, we need to indicate TF_order_random, if TF_order_random=True, then the code will generate representation for randomly selected TF_num TFs.
+- out_dir: Indicate the path for output.
+- expr_file: The file of the gene expression profile. Can be h5 or csv file, the format please refer the example data.
+- pairs_for_predict_file: The file of the training gene pairs and their labels.
+- geneName_map_file: The file to map the name of gene in expr_file to the pairs_for_predict_file
+- flag_load_from_h5: Is the expr_file is a h5 file. True or False.
+- flag_load_split_batch_pos: Is there a file that indicate the position in pairs_for_predict_file to divide pairs into different TFs.
+- TF_divide_pos_file: File that indicate the position in pairs_for_predict_file to divide pairs into different TFs.
+- TF_num: To generate representation for this number of TFs. Should be a integer that equal or samller than the number of TFs in the pairs_for_predict_file.
+- TF_order_random: If the TF_num samller than the number of TFs in the pairs_for_predict_file, we need to indicate TF_order_random, if TF_order_random=True, then the code will generate representation for randomly selected TF_num TFs.
 
 **Command for each cell type**:
 ```
@@ -79,11 +79,11 @@ python3 generate_input_realdata.py -out_dir code_test -expr_file mHSC-L/Expressi
 
 **Example output**:
 
-> x file: the representation of genes' expression file, use as the input of the model.
-> y file: the label for the corresponding pairs.
-> z file: indicate the gene name for each pair.
-> version0: The x file only include the primary image of the gene pair, can be used as input for model CNNC.
-> version11: The x file include the primary images and neighbor images for each gene pair, can be used as input for model DeepDRIM.
+- x file: the representation of genes' expression file, use as the input of the model.
+- y file: the label for the corresponding pairs.
+- z file: indicate the gene name for each pair.
+- version0: The x file only include the primary image of the gene pair, can be used as input for model CNNC.
+- version11: The x file include the primary images and neighbor images for each gene pair, can be used as input for model DeepDRIM.
 
 
 
@@ -96,13 +96,13 @@ python3 generate_input_realdata.py -out_dir code_test -expr_file mHSC-L/Expressi
 
 **Parameters**:
 
-> num_batches: Since in STEP 1, we divide training pairs by TFs, and representation for one TF is included in one batch. Here the num_batches should be the number of TF or the number of x file (in version11 folder generated in the last step).
-> data_path: The path that includes x file, y file and z file, which is generated in the last step.
-> output_dir: Indicate the path for output.
-> cross_validation_fold_divide_file: A file that indicate how to divide the x file into three-fold. See example data XXXX. The file include three line, each line list the ID of the x files for the folder (split by ',').
+- num_batches: Since in STEP 1, we divide training pairs by TFs, and representation for one TF is included in one batch. Here the num_batches should be the number of TF or the number of x file (in version11 folder generated in the last step).
+- data_path: The path that includes x file, y file and z file, which is generated in the last step.
+- output_dir: Indicate the path for output.
+- cross_validation_fold_divide_file: A file that indicate how to divide the x file into three-fold. See example data XXXX. The file include three line, each line list the ID of the x files for the folder (split by ',').
 
-> to_predict: True or False. Default is False, then the code will do cross-validation evaluation. If set to True, we need to indicate weight_path for a trained model and the code will do prediction based on the trained model.
-> weight_path: The path for a trained model.
+- to_predict: True or False. Default is False, then the code will do cross-validation evaluation. If set to True, we need to indicate weight_path for a trained model and the code will do prediction based on the trained model.
+- weight_path: The path for a trained model.
 
 
 
@@ -114,7 +114,6 @@ python3 DeepDRIM.py -num_batches 13 -data_path boneMarrow/version11/ -output_dir
 
 python3 DeepDRIM.py -num_batches 18 -data_path mHSC_L_representation_nobound/version11/ -output_dir mHSC_L_test -cross_validation_fold_divide_file cross_validation_fold_divide2.txt
 
-python3 DeepDRIM.py -to_predict True -num_batches 18 -data_path  mHSC_L_representation_nobound/version11/ -output_dir predict_test/ -weight_path keras_cnn_trained_model_shallow.h5
 ```
 
 
@@ -125,7 +124,7 @@ python3 DeepDRIM.py -to_predict True -num_batches 18 -data_path  mHSC_L_represen
 
 Example: B cell
 search corresponding experiment ID by keyword in (http://gtrd20-06.biouml.org/bioumlweb/#)
-Experiment ID: 'EXP058120', 'EXP058121', 'EXP058126', 'EXP058127',
+>Experiment ID: 'EXP058120', 'EXP058121', 'EXP058126', 'EXP058127',
                                         'EXP000756', 'EXP000757', 'EXP000758', 'EXP000759',
                                         'EXP000760', 'EXP000761', 'EXP000762', 'EXP000763',
                                         'EXP000764', 'EXP000765', 'EXP000766', 'EXP000767',
@@ -138,7 +137,7 @@ Homo_sapiens.GRCh38.99.gtf.gz
 Homo_sapiens_macs2_peaks.interval.gz
 experiment ID
 
-#### 1. Run**:
+#### 1. Run:
 GTRD_chipSeq_data_convert.py -> main_single_cell_type_chipseq_to_positive_pair
 
 **Input**:
@@ -203,16 +202,18 @@ Input: Trained model from TASK1 STEP2, Representation for other pairs generated 
 
 Run: 
 
+```
 R -f simulation_indirect_demo.R
+```
 
 ### STEP 2: Generate Representation for the simulated networks
 
-code: generate_input_simulation.py
 
 Indicate the folder that includes all simulated networks as input_dir in the generate_input_simulation.py->main()
 
-run:
+```
 python generate_input_simulation.py
+```
 
 ### STEP 3: Run CNNC with the representation.
 
