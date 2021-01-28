@@ -1,7 +1,7 @@
 # DeepDRIM
 
 
-DeepDRIM is develop to consider the neighbor images and is improved from a previous model CNNC https://github.com/xiaoyeye/CNNC.
+DeepDRIM is develop to consider the neighbor images and is improved from a previous model [CNNC](https://github.com/xiaoyeye/CNNC).
 
 
 Dependency:   python 3, packages:
@@ -11,14 +11,14 @@ Dependency:   python 3, packages:
 
 
 We test DeepDRIM at the following eight cell type.
-bone marrow-derived macrophages, 
-dendritic cells,
-mESC(1): IB10 mouse, embryonic stem cells,
-hESC: human embryonic stem cells,
-mESC(2): 5G6GR mouse embryonic stem cells,
-mHSC(E): mouse hematopoietic stem cell lines of erythroid lineage,
-mHSC(GM): mouse hematopoietic stem cell lines of granulocyte-macrophage lineage,
-mHSC(L): mouse hematopoietic stem cell lines of lymphoid lineage.
+- bone marrow-derived macrophages, 
+- dendritic cells,
+- mESC(1): IB10 mouse, embryonic stem cells,
+- hESC: human embryonic stem cells,
+- mESC(2): 5G6GR mouse embryonic stem cells,
+- mHSC(E): mouse hematopoietic stem cell lines of erythroid lineage,
+- mHSC(GM): mouse hematopoietic stem cell lines of granulocyte-macrophage lineage,
+- mHSC(L): mouse hematopoietic stem cell lines of lymphoid lineage.
 
 
 Benchmark and processed gene expression profiles for bone marrow-derived macrophages, dendritic cells, mESC(1) are availabel from https://github.com/xiaoyeye/CNNC. 
@@ -26,7 +26,7 @@ Benchmark and processed gene expression profiles for hESC, mESC(2), mHSC(E), mHS
 
 The benchmark provide the pairs with positive labels. We randomly select same number of pairs with negative labels as the positive labels, and generate the training pair file. 
 
-To study B cells in COVID-19, we generate gold standard of B cells based on ChIP-seq experiment from GTRD (https://gtrd.biouml.org) database ChIP-seq peaks (MACS2) files (Homo_sapiens_macs2_peaks.interval.gz) and corresponding gtf file (Homo_sapiens.GRCh38.99.gtf.gz). Then we search corresponding experiment ID by keyword in the GTRD website (http://gtrd20-06.biouml.org/bioumlweb/#).
+To study B cells in COVID-19, we generate gold standard of B cells based on ChIP-seq experiment from [GTRD](https://gtrd.biouml.org) database ChIP-seq peaks (MACS2) files (Homo_sapiens_macs2_peaks.interval.gz) and corresponding gtf file (Homo_sapiens.GRCh38.99.gtf.gz). Then we search corresponding experiment ID by keyword in the [GTRD website](http://gtrd20-06.biouml.org/bioumlweb/#).
 
  
   
@@ -41,13 +41,13 @@ Readme for data folder....!!!!!!!!!!!!!!!
 
 ### STEP 1: Generate input for DeepDRIM
 
-Code: generate_input_realdata.py
+**Code**: generate_input_realdata.py
 
-input: Gene expression profile and the benchmark, etc.
+**input**: Gene expression profile and the benchmark, etc.
 
-parameters:
+**parameters**:
 
-out_dir: Indicate the path for output.
+>out_dir: Indicate the path for output.
 expr_file: The file of the gene expression profile. Can be h5 or csv file, the format please refer the example data.
 pairs_for_predict_file: The file of the training gene pairs and their labels.
 geneName_map_file: The file to map the name of gene in expr_file to the pairs_for_predict_file
@@ -59,6 +59,7 @@ TF_order_random: If the TF_num samller than the number of TFs in the pairs_for_p
 
 command for each cell type:
 
+```
 python3 generate_input_realdata.py -out_dir code_test -expr_file bone_marrow_cell.h5 -pairs_for_predict_file gold_standard_for_TFdivide -geneName_map_file sc_gene_list.txt -flag_load_from_h5 True -flag_load_split_batch_pos True -TF_divide_pos_file whole_gold_split_pos -TF_num 13
 
 python3 generate_input_realdata.py -out_dir code_test -expr_file mesc_cell.h5 -pairs_for_predict_file gold_standard_mesc_whole.txt -geneName_map_file mesc_sc_gene_list.txt -flag_load_from_h5 True -flag_load_split_batch_pos True -TF_divide_pos_file mesc_divideTF_pos.txt -TF_num 38
@@ -75,9 +76,9 @@ python3 generate_input_realdata.py -out_dir code_test -expr_file mHSC-E/Expressi
 python3 generate_input_realdata.py -out_dir code_test -expr_file mHSC-GM/ExpressionData.csv -pairs_for_predict_file training_pairsmHSC_GM.txt -geneName_map_file mHSC_GM_geneName_map.txt -flag_load_from_h5 False -flag_load_split_batch_pos True -TF_divide_pos_file training_pairsmHSC_GM.txtTF_divide_pos.txt -TF_num 18 -TF_order_random True
 
 python3 generate_input_realdata.py -out_dir code_test -expr_file mHSC-L/ExpressionData.csv -pairs_for_predict_file training_pairsmHSC_L.txt -geneName_map_file mHSC_L_geneName_map.txt -flag_load_from_h5 False -flag_load_split_batch_pos True -TF_divide_pos_file training_pairsmHSC_L.txtTF_divide_pos.txt -TF_num 18 -TF_order_random True
+```
 
-
-example output:
+**example output**:
 
 
 x file: the representation of genes' expression file, use as the input of the model.
@@ -91,11 +92,11 @@ version11: The x file include the primary images and neighbor images for each ge
 
 ### STEP 2: TF-aware three-fold Cross-validation for DeepDRIM
 
-code: DeepDRIM.py
+**code**: DeepDRIM.py
 
-input: the output of the STEP 1.
+**input**: the output of the STEP 1.
 
-parameters:
+**parameters**:
 
 num_batches: Since in STEP 1, we divide training pairs by TFs, and representation for one TF is included in one batch. Here the num_batches should be the number of TF or the number of x file (in version11 folder generated in the last step).
 data_path: The path that includes x file, y file and z file, which is generated in the last step.
@@ -107,15 +108,16 @@ weight_path: The path for a trained model.
 
 
 
-command example:
+**command example**:
 
+```
 python3 DeepDRIM.py -num_batches 13 -data_path boneMarrow/version11/ -output_dir boneMarrow -cross_validation_fold_divide_file cross_validation_fold_divide.txt
 
 
 python3 DeepDRIM.py -num_batches 18 -data_path mHSC_L_representation_nobound/version11/ -output_dir mHSC_L_test -cross_validation_fold_divide_file cross_validation_fold_divide2.txt
 
 python3 DeepDRIM.py -to_predict True -num_batches 18 -data_path  mHSC_L_representation_nobound/version11/ -output_dir predict_test/ -weight_path keras_cnn_trained_model_shallow.h5
-
+```
 
 
 ## TASK 2, construct GRN in specific cell type use DeepDRIM
@@ -189,8 +191,10 @@ Input: Trained model from TASK1 STEP2, Representation for other pairs generated 
 
 
 example command:
- python3 DeepDRIM.py -to_predict True -num_batches 18 -data_path  mHSC_L_representation_nobound/version11/ -output_dir predict_test/ -weight_path keras_cnn_trained_model_shallow.h5 !!!!!!!!!!!!
 
+```
+ python3 DeepDRIM.py -to_predict True -num_batches 18 -data_path  mHSC_L_representation_nobound/version11/ -output_dir predict_test/ -weight_path keras_cnn_trained_model_shallow.h5 !!!!!!!!!!!!
+```
 
 ## TASK 3, The effectiveness of neighbor images, test by simulation data
 
@@ -201,7 +205,7 @@ Run:
 
 R -f simulation_indirect_demo.R
 
-STEP 2: Generate Representation for the simulated networks
+### STEP 2: Generate Representation for the simulated networks
 
 code: generate_input_simulation.py
 
@@ -210,7 +214,7 @@ Indicate the folder that includes all simulated networks as input_dir in the gen
 run:
 python generate_input_simulation.py
 
-### STEP 2: Run CNNC with the representation.
+### STEP 3: Run CNNC with the representation.
 
 
 
