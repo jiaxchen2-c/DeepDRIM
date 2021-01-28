@@ -1,14 +1,11 @@
 # DeepDRIM
 
+DeepDRIM is a supervised deep neural network model for predicting GRNs from scRNA-seq data. DeepDRIM converts the joint expression of a TF--gene pair into a primary image and considers the neighbor images as the neighborhood context of the primary image to remove false positives due to transitive interactions. As comparison, [CNNC](https://github.com/xiaoyeye/CNNC) only consider the primary image.
 
-DeepDRIM is develop to consider the neighbor images and is improved from a previous model [CNNC](https://github.com/xiaoyeye/CNNC).
-
-
-Dependency: python 3, packages:
+Code is tested using Python 3.6 and R 3.6.
 
 
 ## Data
-
 
 We test DeepDRIM at the following eight cell type.
 - bone marrow-derived macrophages, 
@@ -20,11 +17,10 @@ We test DeepDRIM at the following eight cell type.
 - mHSC(GM): mouse hematopoietic stem cell lines of granulocyte-macrophage lineage,
 - mHSC(L): mouse hematopoietic stem cell lines of lymphoid lineage.
 
-
 Benchmark and processed gene expression profiles for bone marrow-derived macrophages, dendritic cells, mESC(1) are availabel from https://github.com/xiaoyeye/CNNC. 
 Benchmark and processed gene expression profiles for hESC, mESC(2), mHSC(E), mHSC(GM), mHSC(L) are availabel at https://doi.org/10.5281/zenodo.3378975.
 
-We format the pairs with positive labels in the benchmark downloaded from the corresponding links. We randomly select same number of pairs with negative labels as the positive labels, and generate the training pair file, as in folder data_evaluation.
+We format the pairs with positive labels in the benchmark downloaded from the corresponding links, and randomly select same number of pairs with negative labels as the positive labels, to generate the training pair file (see folder data_evaluation).
 
 To study B cells in COVID-19, we generate gold standard of B cells based on ChIP-seq experiment from [GTRD](https://gtrd.biouml.org) database ChIP-seq peaks (MACS2) files (Homo_sapiens_macs2_peaks.interval.gz) and corresponding gtf file (Homo_sapiens.GRCh38.99.gtf.gz) (see folder data_chip-seq). We search corresponding experiment ID for B cell by keyword in the [GTRD website](http://gtrd20-06.biouml.org/bioumlweb/#), and conduct Gene regulatory network (GRN) analysis use DeepDRIM, folder data_COVID-19 list some data generated in the experiment.
 
