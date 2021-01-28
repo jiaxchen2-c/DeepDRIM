@@ -7,6 +7,8 @@ Code is tested using Python 3.6 and R 3.6.
 
 ## Data
 
+The data for evaluating DeepDRIM and also data related to the experiment in the manuscript is in Zenodo (!!!!).
+
 We test DeepDRIM at the following eight cell type.
 - bone marrow-derived macrophages, 
 - dendritic cells,
@@ -118,7 +120,7 @@ DeepDRIM.py can also predict GRN using a trained model, for example:
 
 ### STEP 1: Generate ChIP-seq gold standard for specific cell type. 
 
-Example: B cell
+Example: B cell.
 search corresponding experiment ID by keyword in (http://gtrd20-06.biouml.org/bioumlweb/#)
 >Experiment ID: 'EXP058120', 'EXP058121', 'EXP058126', 'EXP058127',
                                         'EXP000756', 'EXP000757', 'EXP000758', 'EXP000759',
