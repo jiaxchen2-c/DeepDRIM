@@ -1265,9 +1265,13 @@ if __name__ == '__main__':
     flag_load_split_batch_pos = (args.flag_load_split_batch_pos=='True')
     flag_load_from_h5 = (args.flag_load_from_h5=='True')
     TF_order_random = (args.TF_order_random=='True')
+    if args.TF_num=='None':
+        TF_num = None
+    else:
+        TF_num = args.TF_num
 
 
-    main_for_representation_single_cell_type(out_dir=args.out_dir, expr_file=args.expr_file, pairs_for_predict_file=args.pairs_for_predict_file, TF_divide_pos_file=args.TF_divide_pos_file, geneName_map_file=args.geneName_map_file, TF_num=args.TF_num,
+    main_for_representation_single_cell_type(out_dir=args.out_dir, expr_file=args.expr_file, pairs_for_predict_file=args.pairs_for_predict_file, TF_divide_pos_file=args.TF_divide_pos_file, geneName_map_file=args.geneName_map_file, TF_num=TF_num,
                                              TF_order_random=TF_order_random,flag_load_split_batch_pos=flag_load_split_batch_pos,flag_load_from_h5=flag_load_from_h5)
 
     if False:

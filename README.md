@@ -4,7 +4,7 @@
 DeepDRIM is develop to consider the neighbor images and is improved from a previous model [CNNC](https://github.com/xiaoyeye/CNNC).
 
 
-Dependency:   python 3, packages:
+Dependency: python 3, packages:
 
 
 ## Data
@@ -24,14 +24,9 @@ We test DeepDRIM at the following eight cell type.
 Benchmark and processed gene expression profiles for bone marrow-derived macrophages, dendritic cells, mESC(1) are availabel from https://github.com/xiaoyeye/CNNC. 
 Benchmark and processed gene expression profiles for hESC, mESC(2), mHSC(E), mHSC(GM), mHSC(L) are availabel at https://doi.org/10.5281/zenodo.3378975.
 
-The benchmark provide the pairs with positive labels. We randomly select same number of pairs with negative labels as the positive labels, and generate the training pair file. 
+We format the pairs with positive labels in the benchmark downloaded from the corresponding links. We randomly select same number of pairs with negative labels as the positive labels, and generate the training pair file, as in folder data_evaluation.
 
-To study B cells in COVID-19, we generate gold standard of B cells based on ChIP-seq experiment from [GTRD](https://gtrd.biouml.org) database ChIP-seq peaks (MACS2) files (Homo_sapiens_macs2_peaks.interval.gz) and corresponding gtf file (Homo_sapiens.GRCh38.99.gtf.gz). Then we search corresponding experiment ID by keyword in the [GTRD website](http://gtrd20-06.biouml.org/bioumlweb/#).
-
- 
-  
-
-Readme for data folder....!!!!!!!!!!!!!!!
+To study B cells in COVID-19, we generate gold standard of B cells based on ChIP-seq experiment from [GTRD](https://gtrd.biouml.org) database ChIP-seq peaks (MACS2) files (Homo_sapiens_macs2_peaks.interval.gz) and corresponding gtf file (Homo_sapiens.GRCh38.99.gtf.gz) (see folder data_chip-seq). We search corresponding experiment ID for B cell by keyword in the [GTRD website](http://gtrd20-06.biouml.org/bioumlweb/#), and conduct Gene regulatory network (GRN) analysis use DeepDRIM, folder data_COVID-19 list some data generated in the experiment.
 
 
 
@@ -59,22 +54,22 @@ Readme for data folder....!!!!!!!!!!!!!!!
 
 **Command for each cell type**:
 ```
-python3 generate_input_realdata.py -out_dir code_test -expr_file bone_marrow_cell.h5 -pairs_for_predict_file gold_standard_for_TFdivide -geneName_map_file sc_gene_list.txt -flag_load_from_h5 True -flag_load_split_batch_pos True -TF_divide_pos_file whole_gold_split_pos -TF_num 13
+python3 generate_input_realdata.py -out_dir bonemarrow_representation -expr_file data_evaluation/bonemarrow/bone_marrow_cell.h5 -pairs_for_predict_file data_evaluation/bonemarrow/gold_standard_for_TFdivide -geneName_map_file data_evaluation/bonemarrow/sc_gene_list.txt -flag_load_from_h5 True -flag_load_split_batch_pos True -TF_divide_pos_file data_evaluation/bonemarrow/whole_gold_split_pos -TF_num 13
 
-python3 generate_input_realdata.py -out_dir code_test -expr_file mesc_cell.h5 -pairs_for_predict_file gold_standard_mesc_whole.txt -geneName_map_file mesc_sc_gene_list.txt -flag_load_from_h5 True -flag_load_split_batch_pos True -TF_divide_pos_file mesc_divideTF_pos.txt -TF_num 38
+python3 generate_input_realdata.py -out_dir mesc_1_representation -expr_file data_evaluation/mesc/mesc_cell.h5 -pairs_for_predict_file data_evaluation/mesc/gold_standard_mesc_whole.txt -geneName_map_file data_evaluation/mesc/mesc_sc_gene_list.txt -flag_load_from_h5 True -flag_load_split_batch_pos True -TF_divide_pos_file data_evaluation/mesc/mesc_divideTF_pos.txt -TF_num 38
 
-python3 generate_input_realdata.py -out_dir code_test -expr_file dendritic_cell.h5 -pairs_for_predict_file gold_standard_dendritic_whole.txt -geneName_map_file sc_gene_list.txt -flag_load_from_h5 True -flag_load_split_batch_pos True -TF_divide_pos_file dendritic_divideTF_pos -TF_num 16
+python3 generate_input_realdata.py -out_dir dendritic_representation -expr_file data_evaluation/dendritic/dendritic_cell.h5 -pairs_for_predict_file data_evaluation/dendritic/gold_standard_dendritic_whole.txt -geneName_map_file data_evaluation/dendritic/sc_gene_list.txt -flag_load_from_h5 True -flag_load_split_batch_pos True -TF_divide_pos_file data_evaluation/dendritic/dendritic_divideTF_pos -TF_num 16
 
 
-python3 generate_input_realdata.py -out_dir code_test -expr_file hESC/ExpressionData.csv -pairs_for_predict_file training_pairshESC.txt -geneName_map_file hESC_geneName_map.txt -flag_load_from_h5 False -flag_load_split_batch_pos True -TF_divide_pos_file training_pairshESC.txtTF_divide_pos.txt -TF_num 18 -TF_order_random True
+python3 generate_input_realdata.py -out_dir hESC_representation -expr_file data_evaluation/single_cell_type/hESC/ExpressionData.csv -pairs_for_predict_file data_evaluation/single_cell_type/training_pairshESC.txt -geneName_map_file data_evaluation/single_cell_type/hESC_geneName_map.txt -flag_load_from_h5 False -flag_load_split_batch_pos True -TF_divide_pos_file data_evaluation/single_cell_type/training_pairshESC.txtTF_divide_pos.txt -TF_num 18 -TF_order_random True
 
-python3 generate_input_realdata.py -out_dir code_test -expr_file mESC/ExpressionData.csv -pairs_for_predict_file training_pairsmESC.txt -geneName_map_file mESC_geneName_map.txt -flag_load_from_h5 False -flag_load_split_batch_pos True -TF_divide_pos_file training_pairsmESC.txtTF_divide_pos.txt -TF_num 18 -TF_order_random True
+python3 generate_input_realdata.py -out_dir mESC_2_representation -expr_file data_evaluation/single_cell_type/mESC/ExpressionData.csv -pairs_for_predict_file data_evaluation/single_cell_type/training_pairsmESC.txt -geneName_map_file data_evaluation/single_cell_type/mESC_geneName_map.txt -flag_load_from_h5 False -flag_load_split_batch_pos True -TF_divide_pos_file data_evaluation/single_cell_type/training_pairsmESC.txtTF_divide_pos.txt -TF_num 18 -TF_order_random True
 
-python3 generate_input_realdata.py -out_dir code_test -expr_file mHSC-E/ExpressionData.csv -pairs_for_predict_file training_pairsmHSC_E.txt -geneName_map_file mHSC_E_geneName_map.txt -flag_load_from_h5 False -flag_load_split_batch_pos True -TF_divide_pos_file training_pairsmHSC_E.txtTF_divide_pos.txt -TF_num 18 -TF_order_random True
+python3 generate_input_realdata.py -out_dir mHSC_E_representation -expr_file data_evaluation/single_cell_type/mHSC-E/ExpressionData.csv -pairs_for_predict_file data_evaluation/single_cell_type/training_pairsmHSC_E.txt -geneName_map_file data_evaluation/single_cell_type/mHSC_E_geneName_map.txt -flag_load_from_h5 False -flag_load_split_batch_pos True -TF_divide_pos_file data_evaluation/single_cell_type/training_pairsmHSC_E.txtTF_divide_pos.txt -TF_num 18 -TF_order_random True
 
-python3 generate_input_realdata.py -out_dir code_test -expr_file mHSC-GM/ExpressionData.csv -pairs_for_predict_file training_pairsmHSC_GM.txt -geneName_map_file mHSC_GM_geneName_map.txt -flag_load_from_h5 False -flag_load_split_batch_pos True -TF_divide_pos_file training_pairsmHSC_GM.txtTF_divide_pos.txt -TF_num 18 -TF_order_random True
+python3 generate_input_realdata.py -out_dir mHSC_GM_representation -expr_file data_evaluation/single_cell_type/mHSC-GM/ExpressionData.csv -pairs_for_predict_file data_evaluation/single_cell_type/training_pairsmHSC_GM.txt -geneName_map_file data_evaluation/single_cell_type/mHSC_GM_geneName_map.txt -flag_load_from_h5 False -flag_load_split_batch_pos True -TF_divide_pos_file data_evaluation/single_cell_type/training_pairsmHSC_GM.txtTF_divide_pos.txt -TF_num 18 -TF_order_random True
 
-python3 generate_input_realdata.py -out_dir code_test -expr_file mHSC-L/ExpressionData.csv -pairs_for_predict_file training_pairsmHSC_L.txt -geneName_map_file mHSC_L_geneName_map.txt -flag_load_from_h5 False -flag_load_split_batch_pos True -TF_divide_pos_file training_pairsmHSC_L.txtTF_divide_pos.txt -TF_num 18 -TF_order_random True
+python3 generate_input_realdata.py -out_dir mHSC_L_representation -expr_file data_evaluation/single_cell_type/mHSC-L/ExpressionData.csv -pairs_for_predict_file data_evaluation/single_cell_type/training_pairsmHSC_L.txt -geneName_map_file data_evaluation/single_cell_type/mHSC_L_geneName_map.txt -flag_load_from_h5 False -flag_load_split_batch_pos True -TF_divide_pos_file data_evaluation/single_cell_type/training_pairsmHSC_L.txtTF_divide_pos.txt -TF_num 18 -TF_order_random True
 ```
 
 **Example output**:
@@ -109,16 +104,16 @@ python3 generate_input_realdata.py -out_dir code_test -expr_file mHSC-L/Expressi
 **Command example**:
 
 ```
-python3 DeepDRIM.py -num_batches 13 -data_path boneMarrow/version11/ -output_dir boneMarrow -cross_validation_fold_divide_file cross_validation_fold_divide.txt
+python3 DeepDRIM.py -num_batches 13 -data_path bonemarrow_representation/version11/ -output_dir boneMarrow -cross_validation_fold_divide_file cross_validation_fold_divide.txt
 
 
-python3 DeepDRIM.py -num_batches 18 -data_path mHSC_L_representation_nobound/version11/ -output_dir mHSC_L_test -cross_validation_fold_divide_file cross_validation_fold_divide2.txt
+python3 DeepDRIM.py -num_batches 18 -data_path mHSC_L_representation/version11/ -output_dir mHSC_L_test -cross_validation_fold_divide_file cross_validation_fold_divide2.txt
 
 ```
 
 DeepDRIM.py can also predict GRN using a trained model, for example:
 ```
- python3 DeepDRIM.py -to_predict True -num_batches 18 -data_path  mHSC_L_representation_nobound/version11/ -output_dir predict_test/ -weight_path mHSC_L_keras_cnn_trained_model_shallow.h5 
+ python3 DeepDRIM.py -to_predict True -num_batches 18 -data_path  mHSC_L_representation/version11/ -output_dir predict_test/ -weight_path data_evaluation/mHSC_L_keras_cnn_trained_model_shallow.h5 
 ```
 
 
@@ -140,8 +135,8 @@ search corresponding experiment ID by keyword in (http://gtrd20-06.biouml.org/bi
 GTRD_chipSeq_data_convert.py -> main_single_cell_type_chipseq_to_positive_pair()
 
 **Input**:
-- Homo_sapiens.GRCh38.99.gtf.gz
-- Homo_sapiens_macs2_peaks.interval.gz
+- data_chip-seq/Homo_sapiens.GRCh38.99.gtf.gz
+- data_chip-seq/Homo_sapiens_macs2_peaks.interval.gz
 
 **Parameters**: 
 - tissue = 'B_cell'
@@ -166,7 +161,7 @@ GTRD_chipSeq_data_convert.py -> main_single_cell_type_filter_positive_pair()
 
 **Input**:
 - B_cell_macs_positive_pairs__pvalue_e10_8.csv
-- health_B.csv: expression profile file for filter gene) 
+- health_B.csv: expression profile file for filter genes.
 
 label=health_B
 
@@ -175,22 +170,35 @@ label=health_B
 - positive_pairshealth_B_cell.txt
 - health_B_geneName_map.txt
 - training_pairshealth_B.txt
-
+- training_pairshealth_B.txtTF_divide_pos.txt
 
 ### Run STEP1-2 in TASK 1 to train the model.
+
+```
+python3 generate_input_realdata.py -out_dir B_health_representation -expr_file data_COVID-19/health_B.csv -pairs_for_predict_file data_COVID-19/training_pairshealth_B.txt -geneName_map_file data_COVID-19/health_B_geneName_map.txt -flag_load_from_h5 False -flag_load_split_batch_pos False
+```
+
+```
+python3 DeepDRIM.py -num_batches XX -data_path B_health_representation/version11/ -output_dir B_health -cross_validation_fold_divide_file XX
+```
 
 
 ### STEP 4: Predict use trained DeepDRIM
 
 Input: Trained model from TASK1 STEP2, Representation for other pairs generated by TASK1 STEP1. 
 
-(Example model, trained by healthy B cell scRNA-seq data, B_cell_keras_cnn_trained_model_shallow.h5)
-
-
-**Example command**:
+Example model, trained by healthy B cell scRNA-seq data, B_cell_keras_cnn_trained_model_shallow.h5, generate representation use severe and mild scRNA-seq:
 
 ```
- python3 DeepDRIM.py -to_predict True -num_batches _XX_ -data_path  _XX_  -output_dir _XX_ -weight_path B_cell_keras_cnn_trained_model_shallow.h5 
+python3 generate_input_realdata.py -out_dir B_mild_representation -expr_file data_COVID-19/mild_B.csv -pairs_for_predict_file data_COVID-19/pair_for_predict_B_DE_TF.txt -geneName_map_file health_B_geneName_map.txt -flag_load_from_h5 False -flag_load_split_batch_pos False
+
+python3 generate_input_realdata.py -out_dir B_severe_representation -expr_file severe_B.csv -pairs_for_predict_file pair_for_predict_B_DE_TF.txt -geneName_map_file data_COVID-19/health_B_geneName_map.txt -flag_load_from_h5 False -flag_load_split_batch_pos False
+```
+
+Then predict the GRN use DeepDRIM.py.
+**Example command**:
+```
+ python3 DeepDRIM.py -to_predict True -num_batches XX -data_path  B_severe_representation  -output_dir XX -weight_path data_COVID-19/B_cell_keras_cnn_trained_model_shallow.h5 
 ```
 
 ## TASK 3, The effectiveness of neighbor images, test by simulation data
@@ -207,7 +215,7 @@ R -f simulation_indirect_demo.R
 ### STEP 2: Generate Representation for the simulated networks
 
 
-Indicate the folder that includes all simulated networks as input_dir in the generate_input_simulation.py->main()
+Indicate the folder (output of STEP 1) that includes all simulated networks as input_dir in the generate_input_simulation.py->main()
 
 ```
 python3 generate_input_simulation.py
