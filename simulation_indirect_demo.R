@@ -7,7 +7,12 @@ four_genes_theta_cov=function(fileHeader, p=4,sample_n=1000, mu_zero=F)
   library(MASS)
   mat=matrix(0,p,p)
   
-  edge_a_b=runif(1, min=0.25,max=1)*sample(c(1,-1),1)
+  if(runif(1,min=0,max=100)>50)
+  {
+    edge_a_b=runif(1, min=0.25,max=1)*sample(c(1,-1),1)
+  }else{
+    edge_a_b=0
+  }
   if(runif(1,min=0,max=100)>50)
   {
     edge_b_c=runif(1, min=0.25, max=1)*sample(c(1,-1),1)
