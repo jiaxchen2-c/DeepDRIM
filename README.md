@@ -79,9 +79,9 @@ python3 generate_input_realdata.py -out_dir code_test -expr_file mHSC-L/Expressi
 
 **Example output**:
 
-- x file: the representation of genes' expression file, use as the input of the model.
-- y file: the label for the corresponding pairs.
-- z file: indicate the gene name for each pair.
+- x file: The representation of genes' expression file, use as the input of the model.
+- y file: The label for the corresponding pairs.
+- z file: Indicate the gene name for each pair.
 - version0 folder: Includes the x file only include the primary image of the gene pair, can be used as input for model CNNC.
 - version11 folder: Includes the x file include the primary images and neighbor images for each gene pair, can be used as input for model DeepDRIM.
 
@@ -116,7 +116,7 @@ python3 DeepDRIM.py -num_batches 18 -data_path mHSC_L_representation_nobound/ver
 
 ```
 
-DeepDRIM.py can also predict GRN using a trined model, for example:
+DeepDRIM.py can also predict GRN using a trained model, for example:
 ```
  python3 DeepDRIM.py -to_predict True -num_batches 18 -data_path  mHSC_L_representation_nobound/version11/ -output_dir predict_test/ -weight_path keras_cnn_trained_model_shallow.h5 !!!!!!!!!!!!
 ```
@@ -137,7 +137,7 @@ search corresponding experiment ID by keyword in (http://gtrd20-06.biouml.org/bi
                                         'EXP000772', 'EXP000773', 'EXP000774', 'EXP000775
 
 #### 1. Run:
-GTRD_chipSeq_data_convert.py -> main_single_cell_type_chipseq_to_positive_pair
+GTRD_chipSeq_data_convert.py -> main_single_cell_type_chipseq_to_positive_pair()
 
 **Input**:
 - Homo_sapiens.GRCh38.99.gtf.gz
@@ -148,7 +148,7 @@ GTRD_chipSeq_data_convert.py -> main_single_cell_type_chipseq_to_positive_pair
 - cut off of pvalue is set to 1E-8.
 - in the ChipSeq_data_convert.initialize_exp_to_TF_set() for corrsponding tissue or cell type,
 to set (for B cell):
-ChipSeq_data_convert.single_cell_exp_set = ['EXP058120', 'EXP058121', 'EXP058126', 'EXP058127',
+>ChipSeq_data_convert.single_cell_exp_set = ['EXP058120', 'EXP058121', 'EXP058126', 'EXP058127',
                                         'EXP000756', 'EXP000757', 'EXP000758', 'EXP000759',
                                         'EXP000760', 'EXP000761', 'EXP000762', 'EXP000763',
                                         'EXP000764', 'EXP000765', 'EXP000766', 'EXP000767',
@@ -162,11 +162,12 @@ ChipSeq_data_convert.single_cell_exp_set = ['EXP058120', 'EXP058121', 'EXP058126
 - B_cell_macs_positive_pairs__pvalue_e10_8
 
 #### 2. Run:
-GTRD_chipSeq_data_convert.py -> main_single_cell_type_filter_positive_pair
+GTRD_chipSeq_data_convert.py -> main_single_cell_type_filter_positive_pair()
 
 **Input**:
 - B_cell_macs_positive_pairs__pvalue_e10_8
 - health_B.csv: expression profile file for filter gene) 
+
 label=health_B
 
 **Output**: 
