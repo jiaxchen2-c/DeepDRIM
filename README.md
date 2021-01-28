@@ -82,8 +82,8 @@ python3 generate_input_realdata.py -out_dir code_test -expr_file mHSC-L/Expressi
 - x file: the representation of genes' expression file, use as the input of the model.
 - y file: the label for the corresponding pairs.
 - z file: indicate the gene name for each pair.
-- version0: The x file only include the primary image of the gene pair, can be used as input for model CNNC.
-- version11: The x file include the primary images and neighbor images for each gene pair, can be used as input for model DeepDRIM.
+- version0 folder: Includes the x file only include the primary image of the gene pair, can be used as input for model CNNC.
+- version11 folder: Includes the x file include the primary images and neighbor images for each gene pair, can be used as input for model DeepDRIM.
 
 
 
@@ -116,6 +116,11 @@ python3 DeepDRIM.py -num_batches 18 -data_path mHSC_L_representation_nobound/ver
 
 ```
 
+DeepDRIM.py can also predict GRN using a trined model, for example:
+```
+ python3 DeepDRIM.py -to_predict True -num_batches 18 -data_path  mHSC_L_representation_nobound/version11/ -output_dir predict_test/ -weight_path keras_cnn_trained_model_shallow.h5 !!!!!!!!!!!!
+```
+
 
 ## TASK 2, construct GRN in specific cell type use DeepDRIM
 
@@ -131,23 +136,17 @@ search corresponding experiment ID by keyword in (http://gtrd20-06.biouml.org/bi
                                         'EXP000768', 'EXP000769', 'EXP000770', 'EXP000771',
                                         'EXP000772', 'EXP000773', 'EXP000774', 'EXP000775
 
-
-#### Prepare data:
-Homo_sapiens.GRCh38.99.gtf.gz
-Homo_sapiens_macs2_peaks.interval.gz
-experiment ID
-
 #### 1. Run:
 GTRD_chipSeq_data_convert.py -> main_single_cell_type_chipseq_to_positive_pair
 
 **Input**:
-Homo_sapiens.GRCh38.99.gtf.gz
-Homo_sapiens_macs2_peaks.interval.gz
+- Homo_sapiens.GRCh38.99.gtf.gz
+- Homo_sapiens_macs2_peaks.interval.gz
 
 **Parameters**: 
-tissue = 'B_cell'
-
-in the ChipSeq_data_convert.initialize_exp_to_TF_set() for corrsponding tissue or cell type,
+- tissue = 'B_cell'
+- cut off of pvalue is set to 1E-8.
+- in the ChipSeq_data_convert.initialize_exp_to_TF_set() for corrsponding tissue or cell type,
 to set (for B cell):
 ChipSeq_data_convert.single_cell_exp_set = ['EXP058120', 'EXP058121', 'EXP058126', 'EXP058127',
                                         'EXP000756', 'EXP000757', 'EXP000758', 'EXP000759',
@@ -156,27 +155,25 @@ ChipSeq_data_convert.single_cell_exp_set = ['EXP058120', 'EXP058121', 'EXP058126
                                         'EXP000768', 'EXP000769', 'EXP000770', 'EXP000771',
                                         'EXP000772', 'EXP000773', 'EXP000774', 'EXP000775']
 
-cut off of pvalue is set to 1E-8.
+
 
 
 **Output**: 
-'B_cell_macs_positive_pairs__pvalue_e10_8'  
+- B_cell_macs_positive_pairs__pvalue_e10_8
 
 #### 2. Run:
 GTRD_chipSeq_data_convert.py -> main_single_cell_type_filter_positive_pair
 
 **Input**:
-'B_cell_macs_positive_pairs__pvalue_e10_8' 
-
-health_B.csv (expression profile file for filter gene) 
-
+- B_cell_macs_positive_pairs__pvalue_e10_8
+- health_B.csv: expression profile file for filter gene) 
 label=health_B
 
 **Output**: 
 
-positive_pairshealth_B_cell.txt
-health_B_geneName_map.txt
-training_pairshealth_B.txt
+- positive_pairshealth_B_cell.txt
+- health_B_geneName_map.txt
+- training_pairshealth_B.txt
 
 
 ### Run STEP1-2 in TASK 1 to train the model.
@@ -212,7 +209,7 @@ R -f simulation_indirect_demo.R
 Indicate the folder that includes all simulated networks as input_dir in the generate_input_simulation.py->main()
 
 ```
-python generate_input_simulation.py
+python3 generate_input_simulation.py
 ```
 
 ### STEP 3: Run CNNC with the representation.
