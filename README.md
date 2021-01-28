@@ -8,7 +8,7 @@ Dependency:   python 3, packages:
 
 
 **************
-##Data
+## Data
 **************
 
 We test DeepDRIM at the following eight cell type.
@@ -35,7 +35,7 @@ To study B cells in COVID-19, we generate gold standard of B cells based on ChIP
 Readme for data folder....!!!!!!!!!!!!!!!
 
 
-*******************************************
+
 ##TASK 1, evaluate DeepDRIM in eight cell line
 *******************************************
 
@@ -117,7 +117,8 @@ python3 DeepDRIM.py -num_batches 18 -data_path mHSC_L_representation_nobound/ver
 
 python3 DeepDRIM.py -to_predict True -num_batches 18 -data_path  mHSC_L_representation_nobound/version11/ -output_dir predict_test/ -weight_path keras_cnn_trained_model_shallow.h5
 
-********************************************************
+
+
 ##TASK 2, construct GRN in specific cell type use DeepDRIM
 ********************************************************
 
