@@ -7,7 +7,7 @@ Code is tested using Python 3.6 and R 3.6.
 
 ## Data
 
-The data for evaluating DeepDRIM and also data related to the experiment in the manuscript is in Zenodo (!!!!).
+The data for evaluating DeepDRIM and also data related to the experiment in the manuscript is in https://zenodo.org/record/4475471#.YBNvFZMzZTY.
 
 We test DeepDRIM at the following eight cell type.
 - bone marrow-derived macrophages, 
