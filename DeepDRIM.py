@@ -609,16 +609,25 @@ class direct_model1_squarematrix:
 
 def load_indel_lists_from_file(cross_validation_fold_divide_file):
     s = open(cross_validation_fold_divide_file)
+    cross_fold = []
+
     for line in s:
+        line=line.strip()
         separation = line.split(',')
         indel_list = []
         for i in range(0, len(separation)):
             indel_list.append(separation[i])
-    indel_list0=indel_list[0]
-    indel_list1=indel_list[1]
-    indel_list2=indel_list[2]
+            self.whole_data_TF.append(separation[i])
+        cross_fold.append(indel_list)
 
+    indel_list0=cross_fold[0]
+    indel_list1=cross_fold[1]
+    indel_list2=cross_fold[2]
+    print('indel_list0',indel_list0)
+    print('indel_list1',indel_list1)
+    print('indel_list2',indel_list2)
     return indel_list0,indel_list1,indel_list2
+
 
 
 def main():
