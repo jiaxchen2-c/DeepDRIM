@@ -26,6 +26,9 @@ parser.add_argument('-TF_divide_pos_file', default=None, help='File that indicat
 parser.add_argument('-TF_num', type=int, default=None, help='To generate representation for this number of TFs. Should be a integer that equal or samller than the number of TFs in the pairs_for_predict_file.')
 parser.add_argument('-TF_order_random', default=False, help='If the TF_num samller than the number of TFs in the pairs_for_predict_file, we need to indicate TF_order_random, if TF_order_random=True, then the code will generate representation for randomly selected TF_num TFs.')
 
+parser.add_argument('-top_or_random', default="top_cov", help='Decide how to select the neighbor images. Can be set as "top_cov","top_corr", "random")
+
+
 args = parser.parse_args()
 
 class RepresentationTest2:
@@ -1272,7 +1275,7 @@ if __name__ == '__main__':
 
 
     main_for_representation_single_cell_type(out_dir=args.out_dir, expr_file=args.expr_file, pairs_for_predict_file=args.pairs_for_predict_file, TF_divide_pos_file=args.TF_divide_pos_file, geneName_map_file=args.geneName_map_file, TF_num=TF_num,
-                                             TF_order_random=TF_order_random,flag_load_split_batch_pos=flag_load_split_batch_pos,flag_load_from_h5=flag_load_from_h5)
+                                             TF_order_random=TF_order_random,flag_load_split_batch_pos=flag_load_split_batch_pos,flag_load_from_h5=flag_load_from_h5,top_or_random_or_all=args.top_or_random)
 
     if False:
         main_for_representation_single_cell_type("bonemarrow_representation", 'bone_marrow_cell.h5', 'gold_standard_for_TFdivide',
