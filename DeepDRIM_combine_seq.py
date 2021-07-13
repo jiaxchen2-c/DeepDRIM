@@ -8,6 +8,11 @@ import os
 parser = argparse.ArgumentParser(description="example")
 
 
+#require input: a tensor x, where x[:, 0, :, :,np.newaxis] is for primary image;
+# x[:, 1:(n-1), :, :,np.newaxis] is for neighbor image;
+# x[:, (n-1):n, :, :,np.newaxis] is for sequence information (converted from one-hot encodeing or other encoding methods);  n=x.shape[1].
+
+
 #parser.add_argument('-node_num',help='')
 
 #args = parser.parse_args()
@@ -144,6 +149,9 @@ class direct_model1_squarematrix:
         if not os.path.isdir(self.save_dir):
             os.makedirs(self.save_dir)
 
+
+
+
     def get_single_image_model(self, x_train):
         ############
         print("x_train.shape in single image",x_train.shape)
@@ -204,20 +212,27 @@ class direct_model1_squarematrix:
         # model.add(Dropout(0.5))
         return keras.Model(input_img,model_out)
 
-    def construct_model(self, x_train):
+    def construct_model(self, x_train,x_seq=None):
         ############
         print("x shape", x_train.shape)
 
         n=x_train.shape[1]
         x1=x_train[:, 0, :, :,np.newaxis]
 
-        x2=x_train[:, 1:n, :, :,np.newaxis]
+        x2=x_train[:, 1:(n-1), :, :,np.newaxis]
         x2_1=x2[:,0,:,:,:]
+
+        x3=x_train[:, (n-1):n, :, :,np.newaxis]
+
+        seq_mat_model=self.get_single_image_model(x3)
+        input_seq_mat = keras.layers.Input(shape=x3.shape[1:])
+        seq_mat_out = single_image_model(input_seq_mat)
 
 
         single_image_model=self.get_single_image_model(x1)
         input_img_single = keras.layers.Input(shape=x1.shape[1:])
         single_image_out = single_image_model(input_img_single)
+
 
         pair_image_model = self.get_pair_image_model(x2_1)
 
@@ -236,7 +251,8 @@ class direct_model1_squarematrix:
         merged_vector=keras.layers.concatenate(pair_image_out_list[:], axis=-1)#modify this sentence to merge
         merged_model=keras.Model(input_img_multi_list,merged_vector)
         merged_out=merged_model(input_img_multi_list)
-        combined_layer = keras.layers.concatenate([single_image_out, merged_out], axis=-1)
+
+        combined_layer = keras.layers.concatenate([single_image_out, merged_out,seq_mat_out], axis=-1)
         combined_layer = keras.layers.Dropout(0.5)(combined_layer)
 
         combined = keras.layers.Dense(512, activation='relu')(combined_layer)
@@ -487,6 +503,7 @@ class direct_model1_squarematrix:
     def train_and_test_model(self,num_of_pair_ratio=1):
         for test_indel in range (self.num_batches):                                      #  for GTRD leave-one-TF-out CV
             self.update_test_train_data(test_indel,self.epochs,num_of_pair_ratio)
+
             self.construct_model(self.x_train)
             model = self.model
             callbacks_list = self.callbacks_list
@@ -536,7 +553,9 @@ class direct_model1_squarematrix:
                 test_indel=indel_list2
 
             self.update_test_train_data(test_indel,self.epochs,num_of_pair_ratio)
+
             self.construct_model(self.x_train)
+
             model = self.model
             callbacks_list = self.callbacks_list
             x_train = self.x_train
@@ -570,6 +589,7 @@ class direct_model1_squarematrix:
         test_indel = 0  # the name of data. (0_xdata.npy, 0_ydata.npy, 0_zdata.npy)
         self.update_test_train_data(test_indel, self.epochs)
         self.construct_model(self.x_train)
+
         model = self.model
         if self.load_model_path is not None:
             model.load_weights(self.load_model_path)
