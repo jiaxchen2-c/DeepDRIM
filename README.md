@@ -49,6 +49,8 @@ To study B cells in COVID-19, we generate gold standard of B cells based on ChIP
 - TF_divide_pos_file: File that indicate the position in pairs_for_predict_file to divide pairs into different TFs.
 - TF_num: To generate representation for this number of TFs. Should be a integer that equal or samller than the number of TFs in the pairs_for_predict_file.
 - TF_order_random: If the TF_num samller than the number of TFs in the pairs_for_predict_file, we need to indicate TF_order_random, if TF_order_random=True, then the code will generate representation for randomly selected TF_num TFs.
+- top_or_random: Decide how to select the neighbor images. Can be set as "top_cov","top_corr", "random
+- get_abs: Select neighbor images by considering top value or top absolute value.
 
 **Command for each cell type**:
 ```

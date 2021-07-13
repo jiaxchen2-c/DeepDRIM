@@ -27,7 +27,7 @@ parser.add_argument('-TF_num', type=int, default=None, help='To generate represe
 parser.add_argument('-TF_order_random', default=False, help='If the TF_num samller than the number of TFs in the pairs_for_predict_file, we need to indicate TF_order_random, if TF_order_random=True, then the code will generate representation for randomly selected TF_num TFs.')
 
 parser.add_argument('-top_or_random', default="top_cov", help='Decide how to select the neighbor images. Can be set as "top_cov","top_corr", "random")
-parser.add_argument('-get_abs', default=False, help='Select neighbor images by considering top value or top absolute value.)
+parser.add_argument('-get_abs', default=False, help="Select neighbor images by considering top value or top absolute value.")
 
 
 
