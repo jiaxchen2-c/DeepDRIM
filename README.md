@@ -1,6 +1,6 @@
 # DeepDRIM
 
-This work is publish in: https://academic.oup.com/bib/article-abstract/22/6/bbab325/6356429
+This work is publish in: https://academic.oup.com/bib/article-abstract/22/6/bbab325/6356429 .
 Chen, Jiaxing, et al. "DeepDRIM: a deep neural network to reconstruct cell-type-specific gene regulatory network using single-cell RNA-seq data." Briefings in bioinformatics 22.6 (2021): bbab325.
 
 
