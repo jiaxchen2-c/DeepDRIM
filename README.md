@@ -1,8 +1,14 @@
 # DeepDRIM
 
+This work is publish in: https://academic.oup.com/bib/article-abstract/22/6/bbab325/6356429
+Chen, Jiaxing, et al. "DeepDRIM: a deep neural network to reconstruct cell-type-specific gene regulatory network using single-cell RNA-seq data." Briefings in bioinformatics 22.6 (2021): bbab325.
+
+
 DeepDRIM is a supervised deep neural network model for predicting GRNs from scRNA-seq data. DeepDRIM converts the joint expression of a TF--gene pair into a primary image and considers the neighbor images as the neighborhood context of the primary image to remove false positives due to transitive interactions. As comparison, [CNNC](https://github.com/xiaoyeye/CNNC) only consider the primary image.
 
 Code is tested using Python 3.6 and R 3.6.
+
+
 
 
 ## Data
